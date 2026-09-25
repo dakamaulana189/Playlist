@@ -37,7 +37,7 @@ let activeLineIndex = -1;
 // 1. Load file .lrc secara otomatis dari folder asset_lyrics
 async function loadLyrics() {
     try {
-        const response = await window.fetch('public/asset_lyrics/lyric.lrc');
+        const response = await window.fetch('/asset_lyrics/lyric.lrc');
         const lrcText = await response.text();
         parseLRC(lrcText);
     } catch (error) {
