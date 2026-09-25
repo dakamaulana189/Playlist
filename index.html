@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect - Ed Sheeran</title>
+    <link rel="stylesheet" href="./styles/style.css">
+
+    <!-- CDN Vanta.js & Three.js untuk Background Animasi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+</head>
+
+<body>
+    <div class="music-container">
+        <!-- Kolom Kiri: Cover & Player -->
+        <div class="left-column">
+            <div class="album-art-container">
+                <img src="./icon_music/perfect.svg" alt="Album Cover" id="album-cover">
+            </div>
+            <div class="song-info">
+                <h1 class="song-title">Perfect</h1>
+                <p class="artist-name">Ed Sheeran</p>
+            </div>
+
+            <!-- Audio Player Minimalis -->
+            <audio id="audio-player" src="./asset_music/perfect.mp3"></audio>
+
+            <div class="player-controls">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar-container" id="progress-container">
+                    <div class="progress-bar" id="progress-bar">
+                        <!-- Tambahkan thumb (bola kecil) di ujung progress bar -->
+                        <div class="progress-thumb" id="progress-thumb"></div>
+                    </div>
+                    <!-- Tambahkan tooltip penunjuk waktu -->
+                    <div class="time-tooltip" id="time-tooltip">0:00</div>
+                </div>
+                <span id="duration">3:50</span>
+            </div>
+
+            <div class="play-btn-container">
+                <button id="play-pause-btn">
+                    <svg id="play-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                    </svg>
+                    <svg id="pause-icon" viewBox="0 0 24 24" style="display:none;">
+                        <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Synced Lyrics (Apple Music Style) -->
+        <div class="right-column">
+            <div class="lyrics-wrapper" id="lyrics-container">
+                <!-- Lirik akan di-generate otomatis oleh JavaScript dari file .lrc -->
+            </div>
+        </div>
+    </div>
+
+    <script src="./scripts/script.js"></script>
+</body>
+
+</html>
