@@ -183,5 +183,51 @@ progressContainer.addEventListener('mousemove', (e) => {
     timeTooltip.style.left = `${clickX}px`;
 });
 
+const musicContainer = document.querySelector('.music-container');
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+function handleSwipeGesture() {
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    const threshold = 50;
+
+    // Cuma dianggap swipe horizontal kalau gerakan X lebih dominan dari Y
+    if (Math.abs(deltaX) < Math.abs(deltaY)) return;
+
+    if (deltaX < -threshold) {
+        musicContainer.classList.add('show-lyrics');
+    } else if (deltaX > threshold) {
+        musicContainer.classList.remove('show-lyrics');
+    }
+}
+
+function trackTouchStart(e) {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}
+
+function trackTouchEnd(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipeGesture();
+}
+
+const albumArt = document.getElementById('album-cover');
+albumArt.addEventListener('touchstart', trackTouchStart);
+albumArt.addEventListener('touchend', trackTouchEnd);
+
+lyricsContainer.addEventListener('touchstart', trackTouchStart);
+lyricsContainer.addEventListener('touchend', trackTouchEnd);
+
+// Tombol back manual — solusi cadangan yang selalu reliable
+const backBtn = document.getElementById('back-to-player');
+if (backBtn) {
+    backBtn.addEventListener('click', () => {
+        musicContainer.classList.remove('show-lyrics');
+    });
+}
 // Jalankan parser saat halaman dimuat
 loadLyrics();

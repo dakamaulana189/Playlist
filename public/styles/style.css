@@ -214,3 +214,103 @@ body {
     text-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
     /* Efek glow/pendaran diperkuat */
 }
+
+.back-btn {
+    display: none;
+}
+
+
+@media (max-width: 768px) {
+    .music-container {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .left-column {
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        transition: transform 0.35s ease;
+    }
+
+    .album-art-container {
+        width: 220px;
+        height: 220px;
+        margin-bottom: 16px;
+    }
+
+    .song-info .song-title {
+        font-size: 20px;
+    }
+
+    .player-controls {
+        max-width: 260px;
+    }
+
+    .right-column {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 40px 24px;
+        transform: translateX(100%);
+        transition: transform 0.35s ease;
+    }
+
+    .lyric-line {
+        font-size: 18px;
+    }
+
+    .lyric-line.active {
+        font-size: 21px;
+    }
+
+    .music-container.show-lyrics .left-column {
+        transform: translateX(-100%);
+    }
+
+    .music-container.show-lyrics .right-column {
+        transform: translateX(0);
+    }
+
+    /* Tombol back: ada di .music-container (bukan .right-column),
+       selalu position:absolute sehingga tidak ikut scroll lirik.
+       Di-hide dengan opacity+pointer-events agar transisi mulus
+       dan tidak ada ghost tap saat tampilan cover aktif. */
+    .back-btn {
+        display: flex;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 30;               /* lebih tinggi dari .right-column (z-index default) */
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        font-size: 26px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        /* Sembunyikan saat show-lyrics belum aktif */
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+
+    /* Tampilkan hanya saat show-lyrics aktif */
+    .music-container.show-lyrics .back-btn {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+
+}
+
+canvas {
+    pointer-events: none;
+}

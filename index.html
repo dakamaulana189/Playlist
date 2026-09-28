@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Playlist - By Dexy</title>
-    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="/styles/style.css">
 
     <!-- CDN Vanta.js & Three.js untuk Background Animasi -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
@@ -53,14 +53,19 @@
         </div>
 
         <!-- Kolom Kanan: Synced Lyrics (Apple Music Style) -->
+
         <div class="right-column">
             <div class="lyrics-wrapper" id="lyrics-container">
                 <!-- Lirik akan di-generate otomatis oleh JavaScript dari file .lrc -->
             </div>
         </div>
+
+        <!-- Tombol Back: child langsung .music-container agar tidak ikut scroll .right-column -->
+        <button id="back-to-player" class="back-btn" aria-label="Kembali">‹</button>
     </div>
 
-    <script src="./scripts/script.js"></script>
+
+    <script src="/scripts/script.js"></script>
 </body>
 
 </html>
