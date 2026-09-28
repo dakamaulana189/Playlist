@@ -39,7 +39,49 @@ const SONGS = [
         ready: false
     },
     {
-        id: 'song5',
+        id: 'song6',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song7',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song8',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song9',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song10',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song11',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song12',
         title: 'Coming Soon',
         artist: '-',
         cover: '/icon_music/placeholder.svg',
