@@ -34,17 +34,29 @@ const lyricsContainer = document.getElementById('lyrics-container');
 let lyricsData = [];
 let activeLineIndex = -1;
 
+// Ambil lagu yang dipilih dari URL, fallback ke lagu pertama yang ready
+const params = new URLSearchParams(window.location.search);
+const songId = params.get('song');
+const currentSong = SONGS.find(s => s.id === songId && s.ready) || SONGS.find(s => s.ready);
+
+document.getElementById('album-cover').src = currentSong.cover;
+document.querySelector('.song-title').textContent = currentSong.title;
+document.querySelector('.artist-name').textContent = currentSong.artist;
+audio.src = currentSong.audio;
+
 // 1. Load file .lrc secara otomatis dari folder asset_lyrics
 async function loadLyrics() {
+
     try {
-        const response = await window.fetch('/asset_lyrics/lyric.lrc');
+        const response = await window.fetch(currentSong.lrc);
         const lrcText = await response.text();
         parseLRC(lrcText);
     } catch (error) {
         console.error("Gagal memuat file lirik:", error);
-        lyricsContainer.innerHTML = '<div class="lyric-line active">Gagal memuat lirik. Pastikan nama file .lrc sesuai!</div>';
+        lyricsContainer.innerHTML = '<div class="lyric-line active">Gagal memuat lirik.</div>';
     }
 }
+
 
 // 2. Parser format .lrc standar [MM:SS.xxx]
 function parseLRC(text) {
