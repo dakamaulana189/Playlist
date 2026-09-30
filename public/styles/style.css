@@ -142,27 +142,71 @@ body {
     opacity: 1;
 }
 
-/* Play Button */
-.play-btn-container button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: white;
-    width: 50px;
-    height: 50px;
+.playback-controls {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease;
+    gap: 18px;
 }
 
-.play-btn-container button:hover {
+.control-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.6);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.control-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.control-btn:hover {
+    color: #fff;
     transform: scale(1.1);
 }
 
-.play-btn-container svg {
+.control-btn.active {
+    color: #1ed760;
+}
+
+.control-btn.play-btn {
+    width: 50px;
+    height: 50px;
+    color: #fff;
+}
+
+.control-btn.play-btn svg {
     width: 36px;
     height: 36px;
+}
+
+/* Titik kecil penanda repeat-one aktif */
+.control-btn.repeat-one {
+    position: relative;
+}
+
+.control-btn.repeat-one::after {
+    content: '1';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 9px;
+    font-weight: 700;
+    background: #1ed760;
+    color: #000;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Kolom Kanan: Synced Lyrics */

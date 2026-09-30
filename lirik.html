@@ -40,13 +40,35 @@
                 <span id="duration">3:50</span>
             </div>
 
-            <div class="play-btn-container">
-                <button id="play-pause-btn">
+            <div class="playback-controls">
+                <button id="shuffle-btn" class="control-btn" aria-label="Acak">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M10.59,9.17L5.41,4L4,5.41L9.17,10.58L10.59,9.17M14.5,4L18.06,7.55L4,21.59L5.41,23L19.46,8.95L23,12.5V4H14.5M14.83,13.41L13.41,14.82L16.59,18L13.41,21.17L14.83,22.58L18,19.41L21.17,22.58L22.58,21.17L19.41,18L22.58,14.83L21.17,13.41L18,16.58L14.83,13.41Z" />
+                    </svg>
+                </button>
+                <button id="prev-btn" class="control-btn" aria-label="Sebelumnya">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M6,18V6H8V18H6M9.5,12L18,6V18L9.5,12Z" />
+                    </svg>
+                </button>
+                <button id="play-pause-btn" class="control-btn play-btn">
                     <svg id="play-icon" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
                     </svg>
                     <svg id="pause-icon" viewBox="0 0 24 24" style="display:none;">
                         <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+                    </svg>
+                </button>
+                <button id="next-btn" class="control-btn" aria-label="Selanjutnya">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M16,18H18V6H16M6,18L14.5,12L6,6V18Z" />
+                    </svg>
+                </button>
+                <button id="repeat-btn" class="control-btn" aria-label="Ulangi">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M17,17H7V14L3,18L7,22V19H19V13H17M7,7H17V10L21,6L17,2V5H5V11H7V7Z" />
                     </svg>
                 </button>
             </div>

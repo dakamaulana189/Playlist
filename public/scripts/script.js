@@ -115,6 +115,100 @@ playPauseBtn.addEventListener('click', () => {
         pauseIcon.style.display = 'none';
     }
 });
+// ==== Playback controls: shuffle, prev/next, repeat ====
+const readySongs = SONGS.filter(s => s.ready);
+const shuffleBtn = document.getElementById('shuffle-btn');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const repeatBtn = document.getElementById('repeat-btn');
+
+let shuffleMode = localStorage.getItem('shuffleMode') === 'true';
+let repeatMode = localStorage.getItem('repeatMode') || 'off'; // 'off' | 'all' | 'one'
+
+function updateControlIcons() {
+    shuffleBtn.classList.toggle('active', shuffleMode);
+    repeatBtn.classList.toggle('active', repeatMode !== 'off');
+    repeatBtn.classList.toggle('repeat-one', repeatMode === 'one');
+}
+updateControlIcons();
+
+shuffleBtn.addEventListener('click', () => {
+    shuffleMode = !shuffleMode;
+    localStorage.setItem('shuffleMode', shuffleMode);
+    updateControlIcons();
+});
+
+repeatBtn.addEventListener('click', () => {
+    repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off';
+    localStorage.setItem('repeatMode', repeatMode);
+    updateControlIcons();
+});
+
+function getCurrentIndex() {
+    return readySongs.findIndex(s => s.id === currentSong.id);
+}
+
+function getRandomIndex(excludeIndex) {
+    if (readySongs.length <= 1) return excludeIndex;
+    let idx;
+    do {
+        idx = Math.floor(Math.random() * readySongs.length);
+    } while (idx === excludeIndex);
+    return idx;
+}
+
+function goToSong(index, autoplay) {
+    const target = readySongs[index];
+    if (!target) return;
+    window.location.href = `/lirik.html?song=${target.id}${autoplay ? '&autoplay=1' : ''}`;
+}
+
+prevBtn.addEventListener('click', () => {
+    const idx = getCurrentIndex();
+    const targetIndex = shuffleMode
+        ? getRandomIndex(idx)
+        : (idx - 1 < 0 ? readySongs.length - 1 : idx - 1);
+    goToSong(targetIndex, !audio.paused);
+});
+
+nextBtn.addEventListener('click', () => {
+    const idx = getCurrentIndex();
+    const targetIndex = shuffleMode
+        ? getRandomIndex(idx)
+        : (idx + 1 >= readySongs.length ? 0 : idx + 1);
+    goToSong(targetIndex, !audio.paused);
+});
+
+// Lagu selesai diputar
+audio.addEventListener('ended', () => {
+    if (repeatMode === 'one') {
+        audio.currentTime = 0;
+        audio.play();
+        return;
+    }
+
+    const idx = getCurrentIndex();
+    const isLastSong = idx === readySongs.length - 1;
+
+    if (repeatMode === 'off' && !shuffleMode && isLastSong) {
+        // Playlist habis, berhenti di lagu terakhir
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+        return;
+    }
+
+    const targetIndex = shuffleMode ? getRandomIndex(idx) : (idx + 1) % readySongs.length;
+    goToSong(targetIndex, true);
+});
+
+// Autoplay kalau halaman ini dibuka dari next/prev/lagu selesai
+if (params.get('autoplay') === '1') {
+    audio.addEventListener('loadedmetadata', () => {
+        audio.play();
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+    }, { once: true });
+}
 
 // Format waktu menit:detik
 function formatTime(seconds) {
