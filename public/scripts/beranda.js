@@ -32,11 +32,11 @@ SONGS.forEach(song => {
     }
 
     card.innerHTML = `
-        <div class="song-card-cover">
-            <img src="${song.cover}" alt="${song.title}">
-        </div>
-        <p class="song-card-title">${song.title}</p>
-    `;
+    <div class="song-card-cover">
+        <img src="${song.cover}" alt="${song.title}" decoding="async">
+    </div>
+    <p class="song-card-title">${song.title}</p>
+`;
 
     grid.appendChild(card);
 });
