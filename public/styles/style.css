@@ -10,6 +10,7 @@ body {
     /* Biar animasi Vanta.js kelihatan */
     color: #ffffff;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,7 +22,7 @@ body {
 .music-container {
     width: 96%;
     max-width: 1600px;
-    height: 85vh;
+    height: 100vh;
     display: flex;
     gap: 80px;
     align-items: center;
@@ -215,7 +216,7 @@ body {
 /* Kolom Kanan: Synced Lyrics */
 .right-column {
     flex: 2;
-    height: 70vh;
+    height: 100vh;
     overflow-y: scroll;
     scrollbar-width: none;
     padding-left: 25px;
@@ -239,19 +240,20 @@ body {
 }
 
 .lyric-line {
-    font-size: 36px;
+    font-size: 38px;
     /* Disesuaikan sedikit agar teks panjang muat dengan rapi */
     font-weight: 600;
     color: rgba(255, 255, 255, 0.3);
     /* Lirik tidak aktif lebih redup */
     cursor: pointer;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease, filter 0.3s ease;
     line-height: 1.5;
     word-wrap: break-word;
     /* Tambahkan padding horizontal tipis biar efek glow dan scale tidak mentok */
     padding: 4px 10px;
     margin: 0;
     border-radius: 8px;
+    filter: blur(0px);
 }
 
 .lyric-line.active {
@@ -335,6 +337,7 @@ body {
     .music-container {
         position: relative;
         height: 100vh;
+        height: 100dvh;
         overflow: hidden;
         padding: 0;
     }
@@ -421,6 +424,74 @@ body {
     }
 
 
+}
+
+/* Mode landscape HP: lebar bisa > 768px, tapi tinggi pendek */
+@media (max-height: 500px) and (orientation: landscape) {
+    .music-container {
+        height: 100vh;
+        height: 100dvh;
+        gap: 30px;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .album-art-container {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 8px;
+    }
+
+    .song-info .song-title {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+
+    .song-info .artist-name {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+
+    .player-controls {
+        max-width: 220px;
+        margin-bottom: 8px;
+    }
+
+    .playback-controls {
+        gap: 10px;
+    }
+
+    .control-btn {
+        width: 22px;
+        height: 22px;
+    }
+
+    .control-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .control-btn.play-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .control-btn.play-btn svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .right-column {
+        height: 90vh;
+    }
+
+    .lyric-line {
+        font-size: 20px;
+    }
+
+    .lyric-line.active {
+        font-size: 24px;
+    }
 }
 
 canvas {

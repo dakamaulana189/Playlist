@@ -263,12 +263,16 @@ function updateActiveLyricUI() {
     const lyricLines = lyricsContainer.querySelectorAll('.lyric-line');
 
     lyricLines.forEach((line, index) => {
+        const distance = Math.abs(index - activeLineIndex);
+
         if (index === activeLineIndex) {
             line.classList.add('active');
-            // Auto scroll agar lirik aktif selalu di tengah
+            line.style.filter = 'blur(0px)';
             line.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
             line.classList.remove('active');
+            const blurAmount = Math.min(distance * 1.2, 4);
+            line.style.filter = `blur(${blurAmount}px)`;
         }
     });
 }
