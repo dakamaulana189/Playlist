@@ -28,9 +28,8 @@ SONGS.forEach(song => {
     card.className = 'song-card' + (song.ready ? '' : ' disabled');
 
     if (song.ready) {
-        card.href = `/lirik.html?song=${song.id}`;
+        card.href = `/lirik.html?song=${song.id}&autoplay=1`;
     }
-
     card.innerHTML = `
     <div class="song-card-cover">
         <img src="${song.cover}" alt="${song.title}" decoding="async">

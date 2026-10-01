@@ -201,12 +201,22 @@ audio.addEventListener('ended', () => {
     goToSong(targetIndex, true);
 });
 
-// Autoplay kalau halaman ini dibuka dari next/prev/lagu selesai
+// Autoplay kalau halaman ini dibuka dari next/prev/lagu selesai/klik beranda
 if (params.get('autoplay') === '1') {
     audio.addEventListener('loadedmetadata', () => {
-        audio.play();
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                })
+                .catch(() => {
+                    // Autoplay diblokir browser, biarin user klik manual
+                    console.warn('Autoplay diblokir, tunggu interaksi user.');
+                });
+        }
     }, { once: true });
 }
 

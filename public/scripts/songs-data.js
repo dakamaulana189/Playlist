@@ -90,11 +90,13 @@ const SONGS = [
         ready: true
     },
     {
-        id: 'song11',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
+        id: 'kita-lewati-berdua',
+        title: 'Kita Lewati Berdua',
+        artist: 'Overnight',
+        cover: '/icon_music/kita-lewati-berdua.svg',
+        audio: '/asset_music/kita-lewati-berdua.mp3',
+        lrc: '/asset_lyrics/kita-lewati-berdua.lrc',
+        ready: true
     },
     {
         id: 'song12',
