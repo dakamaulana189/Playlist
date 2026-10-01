@@ -335,5 +335,78 @@ if (backBtn) {
         musicContainer.classList.remove('show-lyrics');
     });
 }
+// ==== Kontrol Volume ====
+const volumeBtn = document.getElementById('volume-btn');
+const volumeIcon = document.getElementById('volume-icon');
+const muteIcon = document.getElementById('mute-icon');
+const volumeSlider = document.getElementById('volume-slider');
+const volumeWrapper = document.querySelector('.volume-wrapper');
+
+// Load volume tersimpan, default 100%
+const savedVolume = localStorage.getItem('playerVolume');
+audio.volume = savedVolume !== null ? parseFloat(savedVolume) : 1;
+volumeSlider.value = audio.volume * 100;
+
+function updateVolumeIcon() {
+    const isMuted = audio.volume === 0;
+    volumeIcon.style.display = isMuted ? 'none' : 'block';
+    muteIcon.style.display = isMuted ? 'block' : 'none';
+}
+updateVolumeIcon();
+
+volumeSlider.addEventListener('input', () => {
+    audio.volume = volumeSlider.value / 100;
+    localStorage.setItem('playerVolume', audio.volume);
+    updateVolumeIcon();
+});
+
+// Klik ikon speaker: toggle mute/unmute cepat
+let lastVolumeBeforeMute = 1;
+volumeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (audio.volume > 0) {
+        lastVolumeBeforeMute = audio.volume;
+        audio.volume = 0;
+    } else {
+        audio.volume = lastVolumeBeforeMute;
+    }
+    volumeSlider.value = audio.volume * 100;
+    localStorage.setItem('playerVolume', audio.volume);
+    updateVolumeIcon();
+});
+
+// Dukungan tap di mobile (hover gak ada di touch device)
+volumeBtn.addEventListener('touchstart', (e) => {
+    e.stopPropagation();
+}, { passive: true });
+
+document.addEventListener('click', (e) => {
+    if (!volumeWrapper.contains(e.target)) {
+        volumeWrapper.classList.remove('open');
+    }
+});
+// ==== Fullscreen ====
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+const expandIcon = document.getElementById('expand-icon');
+const collapseIcon = document.getElementById('collapse-icon');
+
+function updateFullscreenIcon() {
+    const isFullscreen = !!document.fullscreenElement;
+    expandIcon.style.display = isFullscreen ? 'none' : 'block';
+    collapseIcon.style.display = isFullscreen ? 'block' : 'none';
+}
+
+fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.error('Gagal masuk fullscreen:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+});
+
+// Sinkronisasi ikon kalau user keluar fullscreen pakai Esc (bukan lewat tombol)
+document.addEventListener('fullscreenchange', updateFullscreenIcon);
 // Jalankan parser saat halaman dimuat
 loadLyrics();
