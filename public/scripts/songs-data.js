@@ -38,7 +38,7 @@ const SONGS = [
     {
         id: 'shape-of-my-heart',
         title: 'Shape Of My Heart',
-        artist: 'Sting',
+        artist: 'Backstreet Boys',
         cover: '/icon_music/shape-of-my-heart.svg',
         audio: '/asset_music/Shape-Of-My-Heart.mp3',
         lrc: '/asset_lyrics/Shape-of-My-Heart.lrc',

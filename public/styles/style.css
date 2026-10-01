@@ -19,11 +19,11 @@ body {
 /* Tambahkan wrapper background di bawah atau pasang langsung di body */
 
 .music-container {
-    width: 92%;
-    max-width: 1150px;
-    height: 80vh;
+    width: 96%;
+    max-width: 1600px;
+    height: 85vh;
     display: flex;
-    gap: 50px;
+    gap: 80px;
     align-items: center;
 }
 
@@ -37,8 +37,8 @@ body {
 }
 
 .album-art-container {
-    width: 280px;
-    height: 280px;
+    width: 360px;
+    height: 360px;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
@@ -52,13 +52,13 @@ body {
 }
 
 .song-info .song-title {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 700;
     margin-bottom: 6px;
 }
 
 .song-info .artist-name {
-    font-size: 16px;
+    font-size: 18px;
     color: rgba(255, 255, 255, 0.6);
     margin-bottom: 24px;
 }
@@ -66,7 +66,7 @@ body {
 /* Progress Bar */
 .player-controls {
     width: 100%;
-    max-width: 320px;
+    max-width: 400px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -211,13 +211,13 @@ body {
 
 /* Kolom Kanan: Synced Lyrics */
 .right-column {
-    flex: 1.6;
-    height: 65vh;
+    flex: 2;
+    height: 70vh;
     overflow-y: scroll;
     scrollbar-width: none;
     padding-left: 25px;
     /* Tambahkan padding kiri */
-    padding-right: 25px;
+    padding-right: 80px;
     /* Tambahkan padding kanan yang lebih besar untuk ruang glow */
     box-sizing: border-box;
     /* Pastikan padding dihitung dalam lebar total */
@@ -236,7 +236,7 @@ body {
 }
 
 .lyric-line {
-    font-size: 22px;
+    font-size: 36px;
     /* Disesuaikan sedikit agar teks panjang muat dengan rapi */
     font-weight: 600;
     color: rgba(255, 255, 255, 0.3);
@@ -245,12 +245,16 @@ body {
     transition: color 0.3s ease, transform 0.3s ease;
     line-height: 1.5;
     word-wrap: break-word;
+    /* Tambahkan padding horizontal tipis biar efek glow dan scale tidak mentok */
+    padding: 4px 10px;
+    margin: 0;
+    border-radius: 8px;
 }
 
 .lyric-line.active {
     color: #ffffff;
     /* Putih terang menyala */
-    font-size: 26px;
+    font-size: 44px;
     /* Ukuran font diperbesar dari sebelumnya */
     transform: scale(1.05);
     /* Efek zoom diperbesar sedikit */
