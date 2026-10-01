@@ -99,18 +99,22 @@ const SONGS = [
         ready: true
     },
     {
-        id: 'song12',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
+        id: 'everything-u-are',
+        title: 'Everything U Are',
+        artist: 'Hindia',
+        cover: '/icon_music/everything-u-are.svg',
+        audio: '/asset_music/everything-u-are.mp3',
+        lrc: '/asset_lyrics/everything-u-are.lrc',
+        ready: true
     },
     {
-        id: 'song13',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
+        id: 'masa-ini-nanti-dan-masa-indah-lainnya',
+        title: 'Masa Ini Nanti Dan Masa Indah Lainnya',
+        artist: 'Nuca',
+        cover: '/icon_music/Masa-ini-Nanti-dan-Masa-Indah-Lainnya.svg',
+        audio: '/asset_music/Masa-ini-Nanti-dan-Masa-Indah-Lainnya.mp3',
+        lrc: '/asset_lyrics/Masa-ini-Nanti-dan-Masa-Indah-Lainnya.lrc',
+        ready: true
     },
     {
         id: 'song14',
@@ -160,5 +164,76 @@ const SONGS = [
         artist: '-',
         cover: '/icon_music/placeholder.svg',
         ready: false
-    }
+    },
+    {
+        id: 'song21',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song22',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song23',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song24',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song25',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song26',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song27',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song28',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song29',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+    {
+        id: 'song30',
+        title: 'Coming Soon',
+        artist: '-',
+        cover: '/icon_music/placeholder.svg',
+        ready: false
+    },
+
 ];
