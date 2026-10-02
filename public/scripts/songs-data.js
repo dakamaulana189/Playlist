@@ -9,8 +9,8 @@ const SONGS = [
         ready: true
     },
     {
-        id: 'merry-christimas-please-dont-call',
-        title: 'Merry Christimas Please Don\'t Call',
+        id: 'merry-christmas-please-dont-call',
+        title: 'Merry Christmas Please Don\'t Call',
         artist: 'Bleachers',
         cover: '/icon_music/don\'t-call.svg',
         audio: '/asset_music/don\'t-call.mp3',
@@ -60,6 +60,15 @@ const SONGS = [
         cover: '/icon_music/teh-hijau-tulus.svg',
         audio: '/asset_music/teh-hijau-tulus.mp3',
         lrc: '/asset_lyrics/teh-hijau-tulus.lrc',
+        ready: true
+    },
+    {
+        id: 'monokrom',
+        title: 'Tulus - Monokrom',
+        artist: 'Tulus',
+        cover: '/icon_music/monokrom.svg',
+        audio: '/asset_music/monokrom.mp3',
+        lrc: '/asset_lyrics/monokrom.lrc',
         ready: true
     },
     {
@@ -115,13 +124,6 @@ const SONGS = [
         audio: '/asset_music/Masa-ini-Nanti-dan-Masa-Indah-Lainnya.mp3',
         lrc: '/asset_lyrics/Masa-ini-Nanti-dan-Masa-Indah-Lainnya.lrc',
         ready: true
-    },
-    {
-        id: 'song14',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
     },
     {
         id: 'song15',
