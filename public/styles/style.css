@@ -285,6 +285,13 @@ body {
     color: #fff;
 }
 
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.15);
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+}
 
 .back-btn {
     display: none;
