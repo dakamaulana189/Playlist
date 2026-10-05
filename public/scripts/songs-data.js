@@ -126,11 +126,13 @@ const SONGS = [
         ready: true
     },
     {
-        id: 'song15',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
+        id: 'pulang',
+        title: 'Pulang',
+        artist: 'For Revenge',
+        cover: '/icon_music/pulang.svg',
+        audio: '/asset_music/Pulang.mp3',
+        lrc: '/asset_lyrics/pulang.lrc',
+        ready: true
     },
     {
         id: 'song16',
@@ -153,89 +155,6 @@ const SONGS = [
         cover: '/icon_music/placeholder.svg',
         ready: false
     },
-    {
-        id: 'song19',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song20',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song21',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song22',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song23',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song24',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song25',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song26',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song27',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song28',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song29',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
-    {
-        id: 'song30',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
-    },
+
 
 ];
