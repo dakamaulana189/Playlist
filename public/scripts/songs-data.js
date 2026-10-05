@@ -135,25 +135,31 @@ const SONGS = [
         ready: true
     },
     {
-        id: 'song16',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
+        id: 'sadrah',
+        title: 'Sadrah',
+        artist: 'For Revenge',
+        cover: '/icon_music/sadrah.svg',
+        audio: '/asset_music/sadrah.mp3',
+        lrc: '/asset_lyrics/sadrah.lrc',
+        ready: true
     },
     {
-        id: 'song17',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
+        id: 'jakarta-hari-ini',
+        title: 'Jakarta Hari Ini',
+        artist: 'For Revenge',
+        cover: '/icon_music/jakarta-hari-ini.svg',
+        audio: '/asset_music/Jakarta Hari Ini.mp3',
+        lrc: '/asset_lyrics/Jakarta Hari Ini.lrc',
+        ready: true
     },
     {
-        id: 'song18',
-        title: 'Coming Soon',
-        artist: '-',
-        cover: '/icon_music/placeholder.svg',
-        ready: false
+        id: 'serana',
+        title: 'Serana',
+        artist: 'For Revenge',
+        cover: '/icon_music/serana.svg',
+        audio: '/asset_music/serana.mp3',
+        lrc: '/asset_lyrics/serana.lrc',
+        ready: true
     },
 
 
