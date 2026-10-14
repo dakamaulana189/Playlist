@@ -161,6 +161,14 @@ const SONGS = [
         lrc: '/asset_lyrics/serana.lrc',
         ready: true
     },
-
+    {
+        id: 'hingga-tua-bersamamu',
+        title: 'Hingga Tua Bersamamu',
+        artist: 'Rizky Febian',
+        cover: '/icon_music/hingga-tua-bersamamu.svg',
+        audio: '/asset_music/hingga-tua-bersamamu.mp3',
+        lrc: '/asset_lyrics/hingga-tua-bersama.lrc',
+        ready: true
+    },
 
 ];
