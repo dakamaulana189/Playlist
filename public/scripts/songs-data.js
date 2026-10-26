@@ -170,5 +170,15 @@ const SONGS = [
         lrc: '/asset_lyrics/hingga-tua-bersama.lrc',
         ready: true
     },
+    {
+        id: 'negoro-angin',
+        title: 'Negoro Angin',
+        artist: 'Denny Caknan',
+        cover: '/icon_music/negoro-angin.svg',
+        audio: '/asset_music/negoro angin.mp3',
+        lrc: '/asset_lyrics/negoro angin.lrc',
+        ready: true
+    },
+
 
 ];
