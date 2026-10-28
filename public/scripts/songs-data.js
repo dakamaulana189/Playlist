@@ -171,12 +171,30 @@ const SONGS = [
         ready: true
     },
     {
+        id: 'alamak',
+        title: 'Alamak',
+        artist: 'Rizky Febian',
+        cover: '/icon_music/alamak.svg',
+        audio: '/asset_music/alamak.mp3',
+        lrc: '/asset_lyrics/alamak.lrc',
+        ready: true
+    },
+    {
         id: 'negoro-angin',
         title: 'Negoro Angin',
         artist: 'Denny Caknan',
         cover: '/icon_music/negoro-angin.svg',
         audio: '/asset_music/negoro angin.mp3',
         lrc: '/asset_lyrics/negoro angin.lrc',
+        ready: true
+    },
+    {
+        id: 'ku-buat-mau',
+        title: 'Ku Buat Mau',
+        artist: 'CJR',
+        cover: '/icon_music/ku buat mau.svg',
+        audio: '/asset_music/ku buat mau.mp3',
+        lrc: '/asset_lyrics/ku buat mau.lrc',
         ready: true
     },
 
