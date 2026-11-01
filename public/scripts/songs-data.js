@@ -197,6 +197,14 @@ const SONGS = [
         lrc: '/asset_lyrics/ku buat mau.lrc',
         ready: true
     },
-
+    {
+        id: 'typeku',
+        title: 'typeku',
+        artist: 'Fani Rahmansyah',
+        cover: '/icon_music/typeku.svg',
+        audio: '/asset_music/typeku.mp3',
+        lrc: '/asset_lyrics/typeku.lrc',
+        ready: true
+    },
 
 ];
