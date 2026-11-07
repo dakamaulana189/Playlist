@@ -180,15 +180,6 @@ const SONGS = [
         ready: true
     },
     {
-        id: 'negoro-angin',
-        title: 'Negoro Angin',
-        artist: 'Denny Caknan',
-        cover: '/icon_music/negoro-angin.svg',
-        audio: '/asset_music/negoro angin.mp3',
-        lrc: '/asset_lyrics/negoro angin.lrc',
-        ready: true
-    },
-    {
         id: 'ku-buat-mau',
         title: 'Ku Buat Mau',
         artist: 'CJR',
@@ -206,5 +197,24 @@ const SONGS = [
         lrc: '/asset_lyrics/typeku.lrc',
         ready: true
     },
+    {
+        id: 'karena-kamu',
+        title: 'Karena Kamu',
+        artist: 'Geisha',
+        cover: '/icon_music/Karena Kamu.svg',
+        audio: '/asset_music/Karena Kamu.mp3',
+        lrc: '/asset_lyrics/Karena Kamu.lrc',
+        ready: true
+    },
+    {
+        id: 'negoro-angin',
+        title: 'Negoro Angin',
+        artist: 'Denny Caknan',
+        cover: '/icon_music/negoro-angin.svg',
+        audio: '/asset_music/negoro angin.mp3',
+        lrc: '/asset_lyrics/negoro angin.lrc',
+        ready: true
+    },
+
 
 ];
