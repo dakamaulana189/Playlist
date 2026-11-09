@@ -207,6 +207,33 @@ const SONGS = [
         ready: true
     },
     {
+        id: 'bila-kau-tak-disampingku',
+        title: 'Bila Kau Tak Disampingku',
+        artist: 'Sheila On 7',
+        cover: '/icon_music/bila kau tak disampingku.svg',
+        audio: '/asset_music/bila kau tak disampingku.mp3',
+        lrc: '/asset_lyrics/bila kau tak disampingku.lrc',
+        ready: true
+    },
+    {
+        id: 'kita',
+        title: 'Kita',
+        artist: 'Sheila On 7',
+        cover: '/icon_music/sheila on 7.svg',
+        audio: '/asset_music/kita.mp3',
+        lrc: '/asset_lyrics/kita.lrc',
+        ready: true
+    },
+    {
+        id: 'dan',
+        title: 'Dan',
+        artist: 'Sheila On 7',
+        cover: '/icon_music/sheila on 7.svg',
+        audio: '/asset_music/dan.mp3',
+        lrc: '/asset_lyrics/dan.lrc',
+        ready: true
+    },
+    {
         id: 'negoro-angin',
         title: 'Negoro Angin',
         artist: 'Denny Caknan',
