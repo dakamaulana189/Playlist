@@ -45,6 +45,24 @@ const SONGS = [
         ready: true
     },
     {
+        id: 'purple',
+        title: 'Purple',
+        artist: 'Olivia Rodrigo',
+        cover: '/icon_music/purple.svg',
+        audio: '/asset_music/purple.mp3',
+        lrc: '/asset_lyrics/purple.lrc',
+        ready: true
+    },
+    {
+        id: 'hannah-montana',
+        title: 'Hannah Montana',
+        artist: 'Rex Orange County',
+        cover: '/icon_music/Hannah Montana.svg',
+        audio: '/asset_music/Hannah Montana.mp3',
+        lrc: '/asset_lyrics/Hannah Montana.lrc',
+        ready: true
+    },
+    {
         id: 'tulus-jatuh-suka',
         title: 'Tulus - Jatuh Suka',
         artist: 'Tulus',
