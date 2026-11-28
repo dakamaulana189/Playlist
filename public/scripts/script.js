@@ -103,16 +103,27 @@ function renderLyrics() {
     });
 }
 
+// Sinkronisasi ikon selalu mengikuti kondisi audio sebenarnya.
+// Ini juga menangani pause/play dari kontrol sistem atau perangkat.
+function syncPlaybackIcons() {
+    const isPlaying = !audio.paused && !audio.ended;
+    playIcon.style.display = isPlaying ? 'none' : 'block';
+    pauseIcon.style.display = isPlaying ? 'block' : 'none';
+}
+
+audio.addEventListener('play', syncPlaybackIcons);
+audio.addEventListener('pause', syncPlaybackIcons);
+audio.addEventListener('ended', syncPlaybackIcons);
+syncPlaybackIcons();
+
 // 4. Kontrol Play / Pause Audio
 playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
-        audio.play();
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
+        audio.play().catch(error => {
+            console.warn('Audio tidak dapat diputar:', error);
+        });
     } else {
         audio.pause();
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
     }
 });
 // ==== Playback controls: shuffle, prev/next, repeat ====
@@ -277,13 +288,41 @@ function updateActiveLyricUI() {
     });
 }
 
-// Klik pada progress bar untuk lompat durasi
-progressContainer.addEventListener('click', (e) => {
-    const width = progressContainer.clientWidth;
-    const clickX = e.offsetX;
-    const duration = audio.duration;
-    audio.currentTime = (clickX / width) * duration;
+// Seek progress bar menggunakan Pointer Events (mouse, stylus, dan touch).
+// Posisi dihitung dari bounding box agar akurat saat disentuh di HP.
+function seekAudioFromPointer(e) {
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+
+    const rect = progressContainer.getBoundingClientRect();
+    const positionX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+    const percentage = rect.width > 0 ? positionX / rect.width : 0;
+
+    audio.currentTime = percentage * audio.duration;
+}
+
+let isSeekingProgress = false;
+
+progressContainer.addEventListener('pointerdown', (e) => {
+    if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+
+    isSeekingProgress = true;
+    progressContainer.setPointerCapture(e.pointerId);
+    seekAudioFromPointer(e);
 });
+
+progressContainer.addEventListener('pointermove', (e) => {
+    if (isSeekingProgress) {
+        seekAudioFromPointer(e);
+    }
+});
+
+function stopProgressSeeking() {
+    isSeekingProgress = false;
+}
+
+progressContainer.addEventListener('pointerup', stopProgressSeeking);
+progressContainer.addEventListener('pointercancel', stopProgressSeeking);
+progressContainer.addEventListener('lostpointercapture', stopProgressSeeking);
 
 const timeTooltip = document.getElementById('time-tooltip');
 
@@ -303,48 +342,19 @@ progressContainer.addEventListener('mousemove', (e) => {
     timeTooltip.style.left = `${clickX}px`;
 });
 
+// Navigasi tampilan mobile hanya melalui tombol.
+// Tidak ada gesture swipe agar sentuhan/scroll lirik tidak mengganti halaman.
 const musicContainer = document.querySelector('.music-container');
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
-
-function handleSwipeGesture() {
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-    const threshold = 50;
-
-    // Cuma dianggap swipe horizontal kalau gerakan X lebih dominan dari Y
-    if (Math.abs(deltaX) < Math.abs(deltaY)) return;
-
-    if (deltaX < -threshold) {
-        musicContainer.classList.add('show-lyrics');
-    } else if (deltaX > threshold) {
-        musicContainer.classList.remove('show-lyrics');
-    }
-}
-
-function trackTouchStart(e) {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-}
-
-function trackTouchEnd(e) {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipeGesture();
-}
-
-const albumArt = document.getElementById('album-cover');
-albumArt.addEventListener('touchstart', trackTouchStart);
-albumArt.addEventListener('touchend', trackTouchEnd);
-
-lyricsContainer.addEventListener('touchstart', trackTouchStart);
-lyricsContainer.addEventListener('touchend', trackTouchEnd);
-
-// Tombol back manual — solusi cadangan yang selalu reliable
+const showLyricsBtn = document.getElementById('show-lyrics-btn');
 const backBtn = document.getElementById('back-to-player');
-if (backBtn) {
+
+if (showLyricsBtn && musicContainer) {
+    showLyricsBtn.addEventListener('click', () => {
+        musicContainer.classList.add('show-lyrics');
+    });
+}
+
+if (backBtn && musicContainer) {
     backBtn.addEventListener('click', () => {
         musicContainer.classList.remove('show-lyrics');
     });
@@ -374,25 +384,36 @@ volumeSlider.addEventListener('input', () => {
     updateVolumeIcon();
 });
 
-// Klik ikon speaker: toggle mute/unmute cepat
-let lastVolumeBeforeMute = 1;
+// Volume:
+// - Desktop: klik ikon tetap berfungsi sebagai mute/unmute.
+// - Mobile: tap ikon membuka panel slider karena perangkat touch tidak punya hover.
+let lastVolumeBeforeMute = audio.volume > 0 ? audio.volume : 1;
+
 volumeBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+
+    const isMobileLayout = window.matchMedia('(max-width: 768px)').matches;
+
+    if (isMobileLayout) {
+        volumeWrapper.classList.toggle('open');
+        return;
+    }
+
     if (audio.volume > 0) {
         lastVolumeBeforeMute = audio.volume;
         audio.volume = 0;
     } else {
         audio.volume = lastVolumeBeforeMute;
     }
+
     volumeSlider.value = audio.volume * 100;
     localStorage.setItem('playerVolume', audio.volume);
     updateVolumeIcon();
 });
 
-// Dukungan tap di mobile (hover gak ada di touch device)
-volumeBtn.addEventListener('touchstart', (e) => {
+volumeWrapper.addEventListener('click', (e) => {
     e.stopPropagation();
-}, { passive: true });
+});
 
 document.addEventListener('click', (e) => {
     if (!volumeWrapper.contains(e.target)) {
