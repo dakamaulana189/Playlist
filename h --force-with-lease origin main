@@ -1,0 +1,185 @@
+[1mdiff --git a/public/scripts/script.js b/public/scripts/script.js[m
+[1mindex 72094e0..7179074 100644[m
+[1m--- a/public/scripts/script.js[m
+[1m+++ b/public/scripts/script.js[m
+[36m@@ -103,16 +103,27 @@[m [mfunction renderLyrics() {[m
+     });[m
+ }[m
+ [m
+[32m+[m[32m// Sinkronisasi ikon selalu mengikuti kondisi audio sebenarnya.[m
+[32m+[m[32m// Ini juga menangani pause/play dari kontrol sistem atau perangkat.[m
+[32m+[m[32mfunction syncPlaybackIcons() {[m
+[32m+[m[32m    const isPlaying = !audio.paused && !audio.ended;[m
+[32m+[m[32m    playIcon.style.display = isPlaying ? 'none' : 'block';[m
+[32m+[m[32m    pauseIcon.style.display = isPlaying ? 'block' : 'none';[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32maudio.addEventListener('play', syncPlaybackIcons);[m
+[32m+[m[32maudio.addEventListener('pause', syncPlaybackIcons);[m
+[32m+[m[32maudio.addEventListener('ended', syncPlaybackIcons);[m
+[32m+[m[32msyncPlaybackIcons();[m
+[32m+[m
+ // 4. Kontrol Play / Pause Audio[m
+ playPauseBtn.addEventListener('click', () => {[m
+     if (audio.paused) {[m
+[31m-        audio.play();[m
+[31m-        playIcon.style.display = 'none';[m
+[31m-        pauseIcon.style.display = 'block';[m
+[32m+[m[32m        audio.play().catch(error => {[m
+[32m+[m[32m            console.warn('Audio tidak dapat diputar:', error);[m
+[32m+[m[32m        });[m
+     } else {[m
+         audio.pause();[m
+[31m-        playIcon.style.display = 'block';[m
+[31m-        pauseIcon.style.display = 'none';[m
+     }[m
+ });[m
+ // ==== Playback controls: shuffle, prev/next, repeat ====[m
+[36m@@ -277,14 +288,42 @@[m [mfunction updateActiveLyricUI() {[m
+     });[m
+ }[m
+ [m
+[31m-// Klik pada progress bar untuk lompat durasi[m
+[31m-progressContainer.addEventListener('click', (e) => {[m
+[31m-    const width = progressContainer.clientWidth;[m
+[31m-    const clickX = e.offsetX;[m
+[31m-    const duration = audio.duration;[m
+[31m-    audio.currentTime = (clickX / width) * duration;[m
+[32m+[m[32m// Seek progress bar menggunakan Pointer Events (mouse, stylus, dan touch).[m
+[32m+[m[32m// Posisi dihitung dari bounding box agar akurat saat disentuh di HP.[m
+[32m+[m[32mfunction seekAudioFromPointer(e) {[m
+[32m+[m[32m    if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;[m
+[32m+[m
+[32m+[m[32m    const rect = progressContainer.getBoundingClientRect();[m
+[32m+[m[32m    const positionX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));[m
+[32m+[m[32m    const percentage = rect.width > 0 ? positionX / rect.width : 0;[m
+[32m+[m
+[32m+[m[32m    audio.currentTime = percentage * audio.duration;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mlet isSeekingProgress = false;[m
+[32m+[m
+[32m+[m[32mprogressContainer.addEventListener('pointerdown', (e) => {[m
+[32m+[m[32m    if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;[m
+[32m+[m
+[32m+[m[32m    isSeekingProgress = true;[m
+[32m+[m[32m    progressContainer.setPointerCapture(e.pointerId);[m
+[32m+[m[32m    seekAudioFromPointer(e);[m
+[32m+[m[32m});[m
+[32m+[m
+[32m+[m[32mprogressContainer.addEventListener('pointermove', (e) => {[m
+[32m+[m[32m    if (isSeekingProgress) {[m
+[32m+[m[32m        seekAudioFromPointer(e);[m
+[32m+[m[32m    }[m
+ });[m
+ [m
+[32m+[m[32mfunction stopProgressSeeking() {[m
+[32m+[m[32m    isSeekingProgress = false;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mprogressContainer.addEventListener('pointerup', stopProgressSeeking);[m
+[32m+[m[32mprogressContainer.addEventListener('pointercancel', stopProgressSeeking);[m
+[32m+[m[32mprogressContainer.addEventListener('lostpointercapture', stopProgressSeeking);[m
+[32m+[m
+ const timeTooltip = document.getElementById('time-tooltip');[m
+ [m
+ // Menampilkan tooltip waktu dinamis saat kursor digeser di atas progress bar[m
+[36m@@ -303,48 +342,19 @@[m [mprogressContainer.addEventListener('mousemove', (e) => {[m
+     timeTooltip.style.left = `${clickX}px`;[m
+ });[m
+ [m
+[32m+[m[32m// Navigasi tampilan mobile hanya melalui tombol.[m
+[32m+[m[32m// Tidak ada gesture swipe agar sentuhan/scroll lirik tidak mengganti halaman.[m
+ const musicContainer = document.querySelector('.music-container');[m
+[31m-let touchStartX = 0;[m
+[31m-let touchStartY = 0;[m
+[31m-let touchEndX = 0;[m
+[31m-let touchEndY = 0;[m
+[31m-[m
+[31m-function handleSwipeGesture() {[m
+[31m-    const deltaX = touchEndX - touchStartX;[m
+[31m-    const deltaY = touchEndY - touchStartY;[m
+[31m-    const threshold = 50;[m
+[31m-[m
+[31m-    // Cuma dianggap swipe horizontal kalau gerakan X lebih dominan dari Y[m
+[31m-    if (Math.abs(deltaX) < Math.abs(deltaY)) return;[m
+[32m+[m[32mconst showLyricsBtn = document.getElementById('show-lyrics-btn');[m
+[32m+[m[32mconst backBtn = document.getElementById('back-to-player');[m
+ [m
+[31m-    if (deltaX < -threshold) {[m
+[32m+[m[32mif (showLyricsBtn && musicContainer) {[m
+[32m+[m[32m    showLyricsBtn.addEventListener('click', () => {[m
+         musicContainer.classList.add('show-lyrics');[m
+[31m-    } else if (deltaX > threshold) {[m
+[31m-        musicContainer.classList.remove('show-lyrics');[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-function trackTouchStart(e) {[m
+[31m-    touchStartX = e.changedTouches[0].screenX;[m
+[31m-    touchStartY = e.changedTouches[0].screenY;[m
+[31m-}[m
+[31m-[m
+[31m-function trackTouchEnd(e) {[m
+[31m-    touchEndX = e.changedTouches[0].screenX;[m
+[31m-    touchEndY = e.changedTouches[0].screenY;[m
+[31m-    handleSwipeGesture();[m
+[32m+[m[32m    });[m
+ }[m
+ [m
+[31m-const albumArt = document.getElementById('album-cover');[m
+[31m-albumArt.addEventListener('touchstart', trackTouchStart);[m
+[31m-albumArt.addEventListener('touchend', trackTouchEnd);[m
+[31m-[m
+[31m-lyricsContainer.addEventListener('touchstart', trackTouchStart);[m
+[31m-lyricsContainer.addEventListener('touchend', trackTouchEnd);[m
+[31m-[m
+[31m-// Tombol back manual — solusi cadangan yang selalu reliable[m
+[31m-const backBtn = document.getElementById('back-to-player');[m
+[31m-if (backBtn) {[m
+[32m+[m[32mif (backBtn && musicContainer) {[m
+     backBtn.addEventListener('click', () => {[m
+         musicContainer.classList.remove('show-lyrics');[m
+     });[m
+[36m@@ -374,25 +384,36 @@[m [mvolumeSlider.addEventListener('input', () => {[m
+     updateVolumeIcon();[m
+ });[m
+ [m
+[31m-// Klik ikon speaker: toggle mute/unmute cepat[m
+[31m-let lastVolumeBeforeMute = 1;[m
+[32m+[m[32m// Volume:[m
+[32m+[m[32m// - Desktop: klik ikon tetap berfungsi sebagai mute/unmute.[m
+[32m+[m[32m// - Mobile: tap ikon membuka panel slider karena perangkat touch tidak punya hover.[m
+[32m+[m[32mlet lastVolumeBeforeMute = audio.volume > 0 ? audio.volume : 1;[m
+[32m+[m
+ volumeBtn.addEventListener('click', (e) => {[m
+     e.stopPropagation();[m
+[32m+[m
+[32m+[m[32m    const isMobileLayout = window.matchMedia('(max-width: 768px)').matches;[m
+[32m+[m
+[32m+[m[32m    if (isMobileLayout) {[m
+[32m+[m[32m        volumeWrapper.classList.toggle('open');[m
+[32m+[m[32m        return;[m
+[32m+[m[32m    }[m
+[32m+[m
+     if (audio.volume > 0) {[m
+         lastVolumeBeforeMute = audio.volume;[m
+         audio.volume = 0;[m
+     } else {[m
+         audio.volume = lastVolumeBeforeMute;[m
+     }[m
+[32m+[m
+     volumeSlider.value = audio.volume * 100;[m
+     localStorage.setItem('playerVolume', audio.volume);[m
+     updateVolumeIcon();[m
+ });[m
+ [m
+[31m-// Dukungan tap di mobile (hover gak ada di touch device)[m
+[31m-volumeBtn.addEventListener('touchstart', (e) => {[m
+[32m+[m[32mvolumeWrapper.addEventListener('click', (e) => {[m
+     e.stopPropagation();[m
+[31m-}, { passive: true });[m
+[32m+[m[32m});[m
+ [m
+ document.addEventListener('click', (e) => {[m
+     if (!volumeWrapper.contains(e.target)) {[m

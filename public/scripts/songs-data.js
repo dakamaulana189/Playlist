@@ -63,6 +63,15 @@ const SONGS = [
         ready: true
     },
     {
+        id: 'birds-call-your-name',
+        title: 'Birds Call Your Name',
+        artist: 'Nicole Rossi',
+        cover: '/icon_music/Birds Call Your Name.svg',
+        audio: '/asset_music/Birds Call Your Name.mp3',
+        lrc: '/asset_lyrics/Birds Call Your Name.lrc',
+        ready: true
+    },
+    {
         id: 'tulus-jatuh-suka',
         title: 'Tulus - Jatuh Suka',
         artist: 'Tulus',
