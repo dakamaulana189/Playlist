@@ -28,15 +28,14 @@
         <div class="left-column">
 
             <div class="album-art-container">
-                <img src="/icon_music/perfect.svg" alt="Album Cover" id="album-cover">
+                <!-- src akan diisi oleh script.js setelah lagu dipilih -->
+                <img id="album-cover" alt="">
             </div>
 
             <div class="song-info">
-                <h1 class="song-title">Perfect</h1>
-                <p class="artist-name">Ed Sheeran</p>
+                <h1 class="song-title"></h1>
+                <p class="artist-name"></p>
             </div>
-
-            <audio id="audio-player" src="/asset_music/perfect.mp3"></audio>
 
             <!-- Progress -->
             <div class="player-controls">
@@ -135,14 +134,12 @@
             </button>
 
         </div>
-        <!-- END PANEL ALBUM -->
+        <!-- END PANEL ALBUM / LEFT COLUMN -->
 
 
         <!-- PANEL LIRIK -->
         <div class="right-column">
-
             <div class="lyrics-wrapper" id="lyrics-container"></div>
-
         </div>
         <!-- END PANEL LIRIK -->
 
@@ -154,6 +151,10 @@
 
     </div>
     <!-- END MUSIC CONTAINER -->
+
+
+    <!-- Audio tanpa sumber default; script.js mengatur src saat lagu dipilih -->
+    <audio id="audio-player" preload="none"></audio>
 
 
     <!-- =================================
@@ -175,7 +176,6 @@
             <span id="lyrics-duration">0:00</span>
 
         </div>
-
 
         <div class="lyrics-playback-controls">
 
@@ -206,7 +206,6 @@
             </button>
 
         </div>
-
 
         <div class="lyrics-volume">
 

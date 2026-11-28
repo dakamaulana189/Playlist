@@ -67,6 +67,22 @@ document.querySelector('.song-title').textContent = currentSong.title;
 document.querySelector('.artist-name').textContent = currentSong.artist;
 audio.src = currentSong.audio;
 
+// Metadata untuk Windows Media Controls / Dynamic Island
+if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+        title: currentSong.title,
+        artist: currentSong.artist,
+        album: 'Playlist - By Dexy',
+        artwork: [
+            {
+                src: currentSong.cover,
+                sizes: '512x512',
+                type: 'image/png'
+            }
+        ]
+    });
+}
+
 // 1. Load file .lrc secara otomatis dari folder asset_lyrics
 async function loadLyrics() {
 
@@ -221,20 +237,109 @@ function goToSong(index, autoplay) {
     window.location.href = `/lirik.html?song=${target.id}${autoplay ? '&autoplay=1' : ''}`;
 }
 
-prevBtn.addEventListener('click', () => {
+// =========================================
+// PREVIOUS & NEXT TRACK
+// =========================================
+
+function playPreviousTrack() {
     const idx = getCurrentIndex();
+
     const targetIndex = shuffleMode
         ? getRandomIndex(idx)
         : (idx - 1 < 0 ? readySongs.length - 1 : idx - 1);
-    goToSong(targetIndex, !audio.paused);
-});
 
-nextBtn.addEventListener('click', () => {
+    goToSong(targetIndex, !audio.paused);
+}
+
+function playNextTrack() {
     const idx = getCurrentIndex();
+
     const targetIndex = shuffleMode
         ? getRandomIndex(idx)
         : (idx + 1 >= readySongs.length ? 0 : idx + 1);
+
     goToSong(targetIndex, !audio.paused);
+}
+
+// Tombol pada website
+prevBtn.addEventListener('click', playPreviousTrack);
+nextBtn.addEventListener('click', playNextTrack);
+
+// Tombol mini-player
+document.querySelectorAll('[data-player-action="prev"]').forEach(btn => {
+    btn.addEventListener('click', playPreviousTrack);
+});
+
+document.querySelectorAll('[data-player-action="next"]').forEach(btn => {
+    btn.addEventListener('click', playNextTrack);
+});
+// =========================================
+// WINDOWS MEDIA KEYS / MEDIA SESSION API
+// =========================================
+
+if ('mediaSession' in navigator) {
+
+    try {
+        navigator.mediaSession.setActionHandler(
+            'previoustrack',
+            () => {
+                playPreviousTrack();
+            }
+        );
+
+        navigator.mediaSession.setActionHandler(
+            'nexttrack',
+            () => {
+                playNextTrack();
+            }
+        );
+
+        navigator.mediaSession.setActionHandler(
+            'play',
+            () => {
+                audio.play().catch(console.error);
+            }
+        );
+
+        navigator.mediaSession.setActionHandler(
+            'pause',
+            () => {
+                audio.pause();
+            }
+        );
+
+    } catch (error) {
+        console.warn('Media Session tidak sepenuhnya didukung:', error);
+    }
+}
+// =========================================
+// SPACEBAR: PLAY / PAUSE
+// =========================================
+
+document.addEventListener('keydown', (event) => {
+    // Hanya tanggapi tombol Space
+    if (event.code !== 'Space') return;
+
+    // Jangan mengganggu tombol saat user mengetik
+    const target = event.target;
+    const tagName = target.tagName.toLowerCase();
+
+    if (
+        tagName === 'input' ||
+        tagName === 'textarea' ||
+        tagName === 'select' ||
+        target.isContentEditable
+    ) {
+        return;
+    }
+
+    // Cegah Space melakukan scroll halaman
+    event.preventDefault();
+
+    // Cegah pengulangan saat tombol ditahan
+    if (event.repeat) return;
+
+    togglePlayback();
 });
 // Previous dan Next dari mini player lirik
 document.querySelectorAll('[data-player-action="prev"]').forEach(btn => {
