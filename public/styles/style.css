@@ -504,3 +504,602 @@ body {
 canvas {
     pointer-events: none;
 }
+
+/* =========================================
+   NAVIGASI PANEL ALBUM DAN LIRIK
+========================================= */
+
+.show-lyrics-btn {
+    margin-top: 24px;
+    padding: 11px 26px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.show-lyrics-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.04);
+}
+
+/* =========================================
+   LIRIK: PERAPIAN DAN PEMUSATAN
+========================================= */
+
+.lyrics-wrapper {
+    align-items: center;
+    width: 100%;
+}
+
+.lyric-line {
+    width: 100%;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+.lyric-line.active {
+    transform-origin: center;
+}
+
+/* =========================================
+   MINI PLAYER PADA PANEL LIRIK
+========================================= */
+
+.lyrics-player {
+    display: none;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .music-container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    .left-column {
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        transition: transform 0.35s ease;
+    }
+
+    .right-column {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 65px 20px 210px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        transform: translateX(100%);
+        transition: transform 0.35s ease;
+        scrollbar-width: none;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .right-column::-webkit-scrollbar {
+        display: none;
+    }
+
+    .music-container.show-lyrics .left-column {
+        transform: translateX(-100%);
+    }
+
+    .music-container.show-lyrics .right-column {
+        transform: translateX(0);
+    }
+
+    .lyrics-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 28px;
+        width: 100%;
+        padding: 20px 5px 30px;
+        margin: auto 0;
+    }
+
+    .lyric-line {
+        width: 100%;
+        font-size: 18px;
+        line-height: 1.6;
+        text-align: center;
+        padding: 4px 8px;
+    }
+
+    .lyric-line.active {
+        font-size: 21px;
+        text-align: center;
+        transform: scale(1.03);
+        transform-origin: center;
+    }
+
+    /* Tombol kembali ke album */
+
+    .back-btn {
+        display: flex;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 50;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        font-size: 26px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+
+    .music-container.show-lyrics .back-btn {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+}
+
+
+/* =========================================
+   LANDSCAPE MOBILE
+========================================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .lyrics-player {
+        padding: 8px 20px;
+        gap: 6px;
+    }
+
+    .lyrics-playback-controls {
+        gap: 16px;
+    }
+
+    .lyrics-volume {
+        display: none;
+    }
+
+    .right-column {
+        padding-bottom: 130px;
+    }
+}
+
+/* =========================================
+   MINI PLAYER — FINAL MOBILE LAYOUT
+========================================= */
+
+/* Default: tidak tampil */
+body>.lyrics-player {
+    display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+
+    /* Mini-player hanya muncul di panel lirik */
+    body>.music-container.show-lyrics~.lyrics-player {
+        display: flex !important;
+        position: fixed !important;
+
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        top: auto !important;
+
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin: 0 !important;
+        padding: 14px 20px calc(18px + env(safe-area-inset-bottom)) !important;
+
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: center !important;
+        gap: 16px !important;
+
+        background: rgba(8, 15, 30, 0.94) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        box-sizing: border-box !important;
+        z-index: 9999 !important;
+    }
+
+    /* Progress */
+    .lyrics-player-progress {
+        display: flex !important;
+        width: 100% !important;
+        align-items: center !important;
+        gap: 10px !important;
+
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .lyrics-player-progress .progress-bar-container {
+        flex: 1 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: 5px !important;
+    }
+
+    .lyrics-player-progress .progress-bar {
+        height: 100%;
+    }
+
+    .lyrics-player-progress .progress-thumb {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Kontrol harus horizontal */
+    .lyrics-playback-controls {
+        display: flex !important;
+        width: 100% !important;
+
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        gap: 30px !important;
+    }
+
+    .lyrics-playback-controls .control-btn {
+        display: flex !important;
+        flex: 0 0 auto !important;
+
+        width: 30px !important;
+        height: 30px !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .lyrics-playback-controls .control-btn span {
+        white-space: nowrap;
+        font-size: 16px;
+    }
+
+    .lyrics-playback-controls .play-btn {
+        width: 46px !important;
+        height: 46px !important;
+        color: white !important;
+    }
+
+    .lyrics-playback-controls .play-btn svg {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    /* Volume */
+    .lyrics-volume {
+        display: flex !important;
+        width: 100% !important;
+
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .lyrics-volume-slider {
+        display: block !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+        width: auto !important;
+        accent-color: white;
+    }
+
+    /* Beri ruang agar lirik tidak tertutup mini-player */
+    .right-column {
+        padding-bottom: 190px !important;
+    }
+}
+
+/* Landscape */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    @media screen and (max-width: 768px) {
+        body>.music-container.show-lyrics~.lyrics-player {
+            padding: 8px 20px !important;
+            gap: 8px !important;
+        }
+
+        .lyrics-volume {
+            display: none !important;
+        }
+
+        .right-column {
+            padding-bottom: 120px !important;
+        }
+    }
+}
+
+/* =========================================
+   MINI PLAYER — MENYERUPAI PLAYER ALBUM
+   ========================================= */
+
+/* Default: sembunyikan mini-player */
+body>.lyrics-player {
+    display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+
+    /* Tampilkan hanya ketika panel lirik aktif */
+    body>.music-container.show-lyrics~.lyrics-player {
+        display: flex !important;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        top: auto !important;
+
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
+
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 14px !important;
+
+        padding: 16px 24px calc(16px + env(safe-area-inset-bottom)) !important;
+
+        /* Transparan seperti player album */
+        background: rgba(8, 15, 30, 0.72) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+
+        border-top: 1px solid rgba(255, 255, 255, 0.10);
+        box-sizing: border-box !important;
+        z-index: 9999 !important;
+    }
+
+    /* Progress dan durasi */
+    .lyrics-player-progress {
+        display: flex !important;
+        width: 100% !important;
+        max-width: 400px !important;
+        align-items: center !important;
+        gap: 12px !important;
+
+        font-size: 12px !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .lyrics-player-progress .progress-bar-container {
+        flex: 1 !important;
+        width: auto !important;
+        height: 6px !important;
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 2px !important;
+    }
+
+    .lyrics-player-progress .progress-bar {
+        background: #fff !important;
+        height: 100% !important;
+    }
+
+    .lyrics-player-progress .progress-thumb {
+        width: 16px !important;
+        height: 16px !important;
+        background: #fff !important;
+        border: 2px solid #111 !important;
+    }
+
+    /* Tombol kontrol horizontal seperti album */
+    .lyrics-playback-controls {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 18px !important;
+        width: 100% !important;
+    }
+
+    .lyrics-playback-controls .control-btn {
+        display: flex !important;
+        flex: 0 0 auto !important;
+        width: 28px !important;
+        height: 28px !important;
+
+        padding: 0 !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .lyrics-playback-controls .control-btn:hover {
+        color: #fff !important;
+        transform: scale(1.1);
+    }
+
+    .lyrics-playback-controls .control-btn.active {
+        color: #1ed760 !important;
+    }
+
+    .lyrics-playback-controls .control-btn span {
+        font-size: 16px !important;
+        white-space: nowrap;
+    }
+
+    .lyrics-playback-controls .control-btn svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .lyrics-playback-controls .control-btn.play-btn {
+        width: 50px !important;
+        height: 50px !important;
+        color: #fff !important;
+    }
+
+    .lyrics-playback-controls .control-btn.play-btn svg {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    /* Volume */
+    .lyrics-volume {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 12px !important;
+
+        width: 100% !important;
+        max-width: 400px !important;
+
+        font-size: 12px !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .lyrics-volume-slider {
+        display: block !important;
+        flex: 1 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        accent-color: #fff !important;
+        cursor: pointer;
+    }
+
+    /* Jangan sampai mini-player menutupi lirik */
+    .right-column {
+        padding-bottom: 190px !important;
+    }
+}
+
+/* Landscape */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    @media screen and (max-width: 768px) {
+        body>.music-container.show-lyrics~.lyrics-player {
+            padding: 8px 20px !important;
+            gap: 8px !important;
+        }
+
+        .lyrics-volume {
+            display: none !important;
+        }
+
+        .right-column {
+            padding-bottom: 120px !important;
+        }
+    }
+}
+
+/* =========================================
+   LABEL NAVIGASI ALBUM DAN BERANDA
+========================================= */
+
+.back-btn,
+.home-btn {
+    width: auto !important;
+    min-width: 90px;
+    height: 42px !important;
+    padding: 0 14px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.back-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 60;
+}
+
+.home-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 60;
+}
+
+.nav-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.back-btn:hover,
+.home-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.04);
+    color: #fff;
+}
+
+/* Sembunyikan tombol album saat panel album aktif */
+.back-btn {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, background 0.2s ease;
+}
+
+.music-container.show-lyrics .back-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .back-btn,
+    .home-btn {
+        min-width: 90px;
+        height: 40px !important;
+        padding: 0 13px !important;
+        font-size: 12px;
+    }
+}
+
+/* =========================================
+   SEMBUNYIKAN NAVIGASI PANEL DI DESKTOP
+========================================= */
+
+@media screen and (min-width: 769px) {
+    .show-lyrics-btn {
+        display: none !important;
+    }
+
+    .back-btn {
+        display: none !important;
+    }
+}

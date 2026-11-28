@@ -7,21 +7,30 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
+
     <title>Playlist - By Dexy</title>
+
     <link rel="stylesheet" href="/styles/style.css">
 
-    <!-- CDN Vanta.js & Three.js untuk Background Animasi -->
+    <!-- Vanta.js & Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
 </head>
 
 <body>
+
+    <!-- =================================
+         MUSIC CONTAINER
+    ================================== -->
     <div class="music-container">
-        <!-- Kolom Kiri: Cover & Player -->
+
+        <!-- PANEL ALBUM -->
         <div class="left-column">
+
             <div class="album-art-container">
                 <img src="/icon_music/perfect.svg" alt="Album Cover" id="album-cover">
             </div>
+
             <div class="song-info">
                 <h1 class="song-title">Perfect</h1>
                 <p class="artist-name">Ed Sheeran</p>
@@ -29,52 +38,67 @@
 
             <audio id="audio-player" src="/asset_music/perfect.mp3"></audio>
 
+            <!-- Progress -->
             <div class="player-controls">
+
                 <span id="current-time">0:00</span>
+
                 <div class="progress-bar-container" id="progress-container">
                     <div class="progress-bar" id="progress-bar">
                         <div class="progress-thumb" id="progress-thumb"></div>
                     </div>
+
                     <div class="time-tooltip" id="time-tooltip">0:00</div>
                 </div>
+
                 <span id="duration">3:50</span>
+
             </div>
 
+            <!-- Kontrol Musik -->
             <div class="playback-controls">
+
                 <button id="fullscreen-btn" class="control-btn" aria-label="Layar Penuh">
                     <svg id="expand-icon" viewBox="0 0 24 24">
                         <path fill="currentColor"
                             d="M7,14H5V19H10V17H7V14M5,10H7V7H10V5H5V10M17,17H14V19H19V14H17V17M14,5V7H17V10H19V5H14Z" />
                     </svg>
+
                     <svg id="collapse-icon" viewBox="0 0 24 24" style="display:none;">
                         <path fill="currentColor"
                             d="M5,16H8V19H10V14H5V16M8,8H5V10H10V5H8V8M14,19H16V16H19V14H14V19M16,8V5H14V10H19V8H16Z" />
                     </svg>
                 </button>
+
                 <button id="shuffle-btn" class="control-btn" aria-label="Acak">
                     <svg viewBox="0 0 24 24">
                         <path fill="currentColor"
-                            d="M10.59,9.17L5.41,4L4,5.41L9.17,10.58L10.59,9.17M14.5,4L18.06,7.55L4,21.59L5.41,23L19.46,8.95L23,12.5V4H14.5M14.83,13.41L13.41,14.82L16.59,18L13.41,21.17L14.83,22.58L18,19.41L21.17,22.58L22.58,21.17L19.41,18L22.58,14.83L21.17,13.41L18,16.58L14.83,13.41Z" />
+                            d="M10.59,9.17L5.41,4L4,5.41L9.17,10.58L10.59,9.17M14.5,4L18.06,7.55L4,21.59L5.41,23L19.46,8.95L23,12.5V4H14.5M14.83,13.41L13.41,14.82L16.59,18L13.41,21.17L14.83,22.58L18,19.41L21.17,22.58L22.58,21.17L19.41,19.41L22.58,14.83L21.17,13.41L18,16.58L14.83,13.41Z" />
                     </svg>
                 </button>
+
                 <button id="prev-btn" class="control-btn" aria-label="Sebelumnya">
                     <svg viewBox="0 0 24 24">
                         <path fill="currentColor" d="M6,18V6H8V18H6M9.5,12L18,6V18L9.5,12Z" />
                     </svg>
                 </button>
-                <button id="play-pause-btn" class="control-btn play-btn">
+
+                <button id="play-pause-btn" class="control-btn play-btn" aria-label="Putar atau jeda">
                     <svg id="play-icon" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
                     </svg>
+
                     <svg id="pause-icon" viewBox="0 0 24 24" style="display:none;">
                         <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
                     </svg>
                 </button>
+
                 <button id="next-btn" class="control-btn" aria-label="Selanjutnya">
                     <svg viewBox="0 0 24 24">
                         <path fill="currentColor" d="M16,18H18V6H16M6,18L14.5,12L6,6V18Z" />
                     </svg>
                 </button>
+
                 <button id="repeat-btn" class="control-btn" aria-label="Ulangi">
                     <svg viewBox="0 0 24 24">
                         <path fill="currentColor"
@@ -82,36 +106,130 @@
                     </svg>
                 </button>
 
+                <!-- Volume -->
                 <div class="volume-wrapper">
+
                     <button id="volume-btn" class="control-btn" aria-label="Volume">
                         <svg id="volume-icon" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
                         </svg>
+
                         <svg id="mute-icon" viewBox="0 0 24 24" style="display:none;">
                             <path fill="currentColor"
-                                d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z" />
+                                d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73" />
                         </svg>
                     </button>
+
                     <div class="volume-panel">
                         <input type="range" id="volume-slider" min="0" max="100" value="100">
                     </div>
+
+                </div>
+
+            </div>
+
+            <!-- Tombol menuju lirik -->
+            <button id="show-lyrics-btn" class="show-lyrics-btn">
+                Lihat Lirik
+            </button>
+
+        </div>
+        <!-- END PANEL ALBUM -->
+
+
+        <!-- PANEL LIRIK -->
+        <div class="right-column">
+
+            <div class="lyrics-wrapper" id="lyrics-container"></div>
+
+        </div>
+        <!-- END PANEL LIRIK -->
+
+
+        <!-- Tombol kembali ke album -->
+        <button id="back-to-player" class="back-btn" aria-label="Kembali ke album">
+            <span>Album</span>
+        </button>
+
+    </div>
+    <!-- END MUSIC CONTAINER -->
+
+
+    <!-- =================================
+         MINI PLAYER
+         Satu elemen saja, di luar music-container
+    ================================== -->
+    <div class="lyrics-player">
+
+        <div class="lyrics-player-progress">
+
+            <span id="lyrics-current-time">0:00</span>
+
+            <div class="progress-bar-container" id="lyrics-progress-container">
+                <div class="progress-bar" id="lyrics-progress-bar">
+                    <div class="progress-thumb"></div>
                 </div>
             </div>
+
+            <span id="lyrics-duration">0:00</span>
+
         </div>
 
-        <!-- Kolom Kanan: Synced Lyrics -->
-        <div class="right-column">
-            <div class="lyrics-wrapper" id="lyrics-container">
-            </div>
+
+        <div class="lyrics-playback-controls">
+
+            <button class="control-btn" data-player-action="shuffle" aria-label="Acak">
+                <span>⤨</span>
+            </button>
+
+            <button class="control-btn" data-player-action="prev" aria-label="Sebelumnya">
+                <span>|◀</span>
+            </button>
+
+            <button class="control-btn play-btn" data-player-action="toggle" aria-label="Putar atau jeda">
+                <svg class="lyrics-play-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                </svg>
+
+                <svg class="lyrics-pause-icon" viewBox="0 0 24 24" style="display:none;">
+                    <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+                </svg>
+            </button>
+
+            <button class="control-btn" data-player-action="next" aria-label="Selanjutnya">
+                <span>▶|</span>
+            </button>
+
+            <button class="control-btn" data-player-action="repeat" aria-label="Ulangi">
+                <span>↻</span>
+            </button>
+
         </div>
 
-        <!-- Tombol Back: child langsung .music-container -->
-        <button id="back-to-player" class="back-btn" aria-label="Kembali">‹</button>
+
+        <div class="lyrics-volume">
+
+            <span>Volume</span>
+
+            <input type="range" class="lyrics-volume-slider" min="0" max="100" value="100" aria-label="Atur volume">
+
+        </div>
+
     </div>
+    <!-- END MINI PLAYER -->
 
-    <a href="/index.html" class="home-btn" aria-label="Kembali ke beranda">⬅</a>
 
+    <!-- Tombol kembali ke beranda -->
+    <a href="/index.html" class="home-btn" aria-label="Kembali ke beranda">
+        <span>Beranda</span>
+    </a>
+
+
+    <!-- JavaScript: dipanggil satu kali -->
     <script src="/scripts/songs-data.js"></script>
     <script src="/scripts/script.js"></script>
+
 </body>
+
+</html>

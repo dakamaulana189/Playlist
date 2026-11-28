@@ -30,6 +30,29 @@ const progressContainer = document.getElementById('progress-container');
 const currentTimeEl = document.getElementById('current-time');
 const durationEl = document.getElementById('duration');
 const lyricsContainer = document.getElementById('lyrics-container');
+const lyricsPlayIcon = document.querySelector('.lyrics-play-icon');
+const lyricsPauseIcon = document.querySelector('.lyrics-pause-icon');
+const lyricsProgressContainer = document.getElementById('lyrics-progress-container');
+const lyricsProgressBar = document.getElementById('lyrics-progress-bar');
+const lyricsCurrentTime = document.getElementById('lyrics-current-time');
+const lyricsDuration = document.getElementById('lyrics-duration');
+const lyricsVolumeSlider = document.querySelector('.lyrics-volume-slider');
+
+function syncPlayPauseIcons() {
+    const isPlaying = !audio.paused;
+
+    playIcon.style.display = isPlaying ? 'none' : 'block';
+    pauseIcon.style.display = isPlaying ? 'block' : 'none';
+
+    if (lyricsPlayIcon && lyricsPauseIcon) {
+        lyricsPlayIcon.style.display = isPlaying ? 'none' : 'block';
+        lyricsPauseIcon.style.display = isPlaying ? 'block' : 'none';
+    }
+}
+
+audio.addEventListener('play', syncPlayPauseIcons);
+audio.addEventListener('pause', syncPlayPauseIcons);
+audio.addEventListener('ended', syncPlayPauseIcons);
 
 let lyricsData = [];
 let activeLineIndex = -1;
@@ -104,16 +127,21 @@ function renderLyrics() {
 }
 
 // 4. Kontrol Play / Pause Audio
-playPauseBtn.addEventListener('click', () => {
+// Kontrol Play / Pause untuk panel album dan panel lirik
+function togglePlayback() {
     if (audio.paused) {
-        audio.play();
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
+        audio.play().catch(error => {
+            console.error('Gagal memutar audio:', error);
+        });
     } else {
         audio.pause();
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
     }
+}
+
+playPauseBtn.addEventListener('click', togglePlayback);
+
+document.querySelectorAll('[data-player-action="toggle"]').forEach(btn => {
+    btn.addEventListener('click', togglePlayback);
 });
 // ==== Playback controls: shuffle, prev/next, repeat ====
 const readySongs = SONGS.filter(s => s.ready);
@@ -129,6 +157,15 @@ function updateControlIcons() {
     shuffleBtn.classList.toggle('active', shuffleMode);
     repeatBtn.classList.toggle('active', repeatMode !== 'off');
     repeatBtn.classList.toggle('repeat-one', repeatMode === 'one');
+
+    document.querySelectorAll('[data-player-action="shuffle"]').forEach(btn => {
+        btn.classList.toggle('active', shuffleMode);
+    });
+
+    document.querySelectorAll('[data-player-action="repeat"]').forEach(btn => {
+        btn.classList.toggle('active', repeatMode !== 'off');
+        btn.classList.toggle('repeat-one', repeatMode === 'one');
+    });
 }
 updateControlIcons();
 
@@ -142,6 +179,27 @@ repeatBtn.addEventListener('click', () => {
     repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off';
     localStorage.setItem('repeatMode', repeatMode);
     updateControlIcons();
+});
+// Shuffle dan repeat dari panel lirik
+document.querySelectorAll('[data-player-action="shuffle"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        shuffleMode = !shuffleMode;
+        localStorage.setItem('shuffleMode', shuffleMode);
+        updateControlIcons();
+    });
+});
+
+document.querySelectorAll('[data-player-action="repeat"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        repeatMode = repeatMode === 'off'
+            ? 'all'
+            : repeatMode === 'all'
+                ? 'one'
+                : 'off';
+
+        localStorage.setItem('repeatMode', repeatMode);
+        updateControlIcons();
+    });
 });
 
 function getCurrentIndex() {
@@ -177,6 +235,18 @@ nextBtn.addEventListener('click', () => {
         ? getRandomIndex(idx)
         : (idx + 1 >= readySongs.length ? 0 : idx + 1);
     goToSong(targetIndex, !audio.paused);
+});
+// Previous dan Next dari mini player lirik
+document.querySelectorAll('[data-player-action="prev"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        prevBtn.click();
+    });
+});
+
+document.querySelectorAll('[data-player-action="next"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        nextBtn.click();
+    });
 });
 
 // Lagu selesai diputar
@@ -228,20 +298,33 @@ function formatTime(seconds) {
 }
 
 audio.addEventListener('loadedmetadata', () => {
-    durationEl.textContent = formatTime(audio.duration);
+    const duration = formatTime(audio.duration);
+
+    durationEl.textContent = duration;
+
+    if (lyricsDuration) {
+        lyricsDuration.textContent = duration;
+    }
 });
 
 // 5. Sinkronisasi Real-time dengan Audio CurrentTime
 audio.addEventListener('timeupdate', () => {
     const currentTime = audio.currentTime;
 
-    // Update progress bar
     if (audio.duration) {
         const progressPercent = (currentTime / audio.duration) * 100;
+
         progressBar.style.width = `${progressPercent}%`;
         currentTimeEl.textContent = formatTime(currentTime);
+
+        if (lyricsProgressBar) {
+            lyricsProgressBar.style.width = `${progressPercent}%`;
+        }
     }
 
+    if (lyricsCurrentTime) {
+        lyricsCurrentTime.textContent = formatTime(currentTime);
+    }
     // Cari baris lirik aktif berdasarkan detik lagu
     let currentIndex = -1;
     for (let i = 0; i < lyricsData.length; i++) {
@@ -259,30 +342,66 @@ audio.addEventListener('timeupdate', () => {
 });
 
 // 6. Highlight dan Auto-Scroll Lirik
+
 function updateActiveLyricUI() {
     const lyricLines = lyricsContainer.querySelectorAll('.lyric-line');
+    const scrollContainer = document.querySelector('.right-column');
 
+    if (!scrollContainer || lyricLines.length === 0) return;
+
+    // Pulihkan highlight dan efek blur seperti kode asli
     lyricLines.forEach((line, index) => {
         const distance = Math.abs(index - activeLineIndex);
 
         if (index === activeLineIndex) {
             line.classList.add('active');
             line.style.filter = 'blur(0px)';
-            line.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
             line.classList.remove('active');
+
             const blurAmount = Math.min(distance * 1.2, 4);
             line.style.filter = `blur(${blurAmount}px)`;
         }
     });
+
+    // Desktop: auto-scroll selalu aktif.
+    // HP: auto-scroll hanya ketika panel lirik dibuka.
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isLyricsVisible = musicContainer.classList.contains('show-lyrics');
+
+    if (isMobile && !isLyricsVisible) return;
+
+    const activeLine = lyricsContainer.querySelector('.lyric-line.active');
+
+    if (!activeLine) return;
+
+    // Scroll hanya area lirik, bukan seluruh halaman
+    const lineRect = activeLine.getBoundingClientRect();
+    const containerRect = scrollContainer.getBoundingClientRect();
+
+    const targetScroll =
+        scrollContainer.scrollTop +
+        lineRect.top -
+        containerRect.top -
+        (scrollContainer.clientHeight - lineRect.height) / 2;
+
+    scrollContainer.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth'
+    });
 }
+
+
 
 // Klik pada progress bar untuk lompat durasi
 progressContainer.addEventListener('click', (e) => {
-    const width = progressContainer.clientWidth;
-    const clickX = e.offsetX;
-    const duration = audio.duration;
-    audio.currentTime = (clickX / width) * duration;
+    if (!audio.duration) return;
+
+    const rect = progressContainer.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+
+    audio.currentTime = percentage * audio.duration;
 });
 
 const timeTooltip = document.getElementById('time-tooltip');
@@ -302,53 +421,50 @@ progressContainer.addEventListener('mousemove', (e) => {
     timeTooltip.textContent = formatTime(hoverTime);
     timeTooltip.style.left = `${clickX}px`;
 });
+// Seek lagu melalui progress bar pada panel lirik
+if (lyricsProgressContainer) {
+    lyricsProgressContainer.addEventListener('click', (e) => {
+        if (!audio.duration) return;
+
+        const rect = lyricsProgressContainer.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const percentage = Math.max(0, Math.min(1, clickX / rect.width));
+
+        audio.currentTime = percentage * audio.duration;
+    });
+}
+
+// =========================================
+// NAVIGASI PANEL ALBUM DAN LIRIK
+// =========================================
 
 const musicContainer = document.querySelector('.music-container');
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
+const showLyricsBtn = document.getElementById('show-lyrics-btn');
 
-function handleSwipeGesture() {
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-    const threshold = 50;
-
-    // Cuma dianggap swipe horizontal kalau gerakan X lebih dominan dari Y
-    if (Math.abs(deltaX) < Math.abs(deltaY)) return;
-
-    if (deltaX < -threshold) {
-        musicContainer.classList.add('show-lyrics');
-    } else if (deltaX > threshold) {
-        musicContainer.classList.remove('show-lyrics');
-    }
-}
-
-function trackTouchStart(e) {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-}
-
-function trackTouchEnd(e) {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipeGesture();
-}
-
-const albumArt = document.getElementById('album-cover');
-albumArt.addEventListener('touchstart', trackTouchStart);
-albumArt.addEventListener('touchend', trackTouchEnd);
-
-lyricsContainer.addEventListener('touchstart', trackTouchStart);
-lyricsContainer.addEventListener('touchend', trackTouchEnd);
-
-// Tombol back manual — solusi cadangan yang selalu reliable
+// ==== Navigasi Panel Album dan Lirik ====
 const backBtn = document.getElementById('back-to-player');
+
+if (showLyricsBtn) {
+    showLyricsBtn.addEventListener('click', () => {
+        musicContainer.classList.add('show-lyrics');
+    });
+}
+
 if (backBtn) {
     backBtn.addEventListener('click', () => {
         musicContainer.classList.remove('show-lyrics');
     });
 }
+
+
+// Kembali ke panel album
+if (backBtn) {
+    backBtn.addEventListener('click', () => {
+        musicContainer.classList.remove('show-lyrics');
+    });
+}
+
+
 // ==== Kontrol Volume ====
 const volumeBtn = document.getElementById('volume-btn');
 const volumeIcon = document.getElementById('volume-icon');
@@ -370,9 +486,26 @@ updateVolumeIcon();
 
 volumeSlider.addEventListener('input', () => {
     audio.volume = volumeSlider.value / 100;
+
+    if (lyricsVolumeSlider) {
+        lyricsVolumeSlider.value = volumeSlider.value;
+    }
+
     localStorage.setItem('playerVolume', audio.volume);
     updateVolumeIcon();
 });
+// Volume dari panel lirik
+if (lyricsVolumeSlider) {
+    lyricsVolumeSlider.value = audio.volume * 100;
+
+    lyricsVolumeSlider.addEventListener('input', () => {
+        audio.volume = lyricsVolumeSlider.value / 100;
+        volumeSlider.value = lyricsVolumeSlider.value;
+
+        localStorage.setItem('playerVolume', audio.volume);
+        updateVolumeIcon();
+    });
+}
 
 // Klik ikon speaker: toggle mute/unmute cepat
 let lastVolumeBeforeMute = 1;
@@ -385,6 +518,9 @@ volumeBtn.addEventListener('click', (e) => {
         audio.volume = lastVolumeBeforeMute;
     }
     volumeSlider.value = audio.volume * 100;
+    if (lyricsVolumeSlider) {
+        lyricsVolumeSlider.value = audio.volume * 100;
+    }
     localStorage.setItem('playerVolume', audio.volume);
     updateVolumeIcon();
 });
