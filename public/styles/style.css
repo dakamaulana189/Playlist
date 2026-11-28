@@ -504,3 +504,59 @@ body {
 canvas {
     pointer-events: none;
 }
+
+/* Navigasi lirik khusus layar mobile; desktop tetap memakai layout semula. */
+.show-lyrics-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .show-lyrics-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        margin-top: 14px;
+        padding: 0 22px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .show-lyrics-btn:active {
+        background: rgba(255, 255, 255, 0.22);
+    }
+
+    /* Area seek lebih mudah disentuh tanpa mengubah tampilan desktop. */
+    .progress-bar-container {
+        height: 10px;
+        touch-action: none;
+    }
+
+    .progress-thumb {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Panel volume bisa dibuka dengan tap pada ikon speaker. */
+    .volume-panel {
+        bottom: 54px;
+        height: 120px;
+    }
+
+    .volume-wrapper.open .volume-panel {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .back-btn {
+        width: 44px;
+        height: 44px;
+    }
+}
